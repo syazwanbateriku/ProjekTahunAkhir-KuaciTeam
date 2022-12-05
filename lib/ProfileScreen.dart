@@ -46,19 +46,21 @@ class _homescreenState extends State<homescreen> {
     loadUserData();
   }
 
-  void loadUserData(){
-    _firestore.collection("users").doc("${user.email}").get().then((snapshot){
+  void loadUserData() {
+    _firestore.collection("users").doc("${user.email}").get().then((snapshot) {
       setState(() {
         firstName = snapshot.data()!["firstname"];
         lastName = snapshot.data()!["lastname"];
       });
     });
   }
-  void checkdocument (){
+
+  void checkdocument() {
     Reference ref = FirebaseStorage.instance.ref().child("${user.email}");
     ref.getDownloadURL().then((value) => hasPimage = true);
   }
-  void loadgambar () async{
+
+  void loadgambar() async {
     Reference ref = FirebaseStorage.instance.ref().child("${user.email}");
     ref.getDownloadURL().then((value) async {
       setState(() {
@@ -66,16 +68,15 @@ class _homescreenState extends State<homescreen> {
       });
     });
   }
+
   @override
   Widget build(BuildContext context) {
-    initState();
+
 
     // final collection = FirebaseFirestore.instance.collection('users');
 
-
     return MaterialApp(
-        theme:
-        ThemeData(appBarTheme: AppBarTheme(color: Colors.purple)),
+        theme: ThemeData(appBarTheme: AppBarTheme(color: Colors.purple)),
         home: Scaffold(
           appBar: AppBar(
             centerTitle: true,
@@ -93,9 +94,10 @@ class _homescreenState extends State<homescreen> {
                 Center(
                   child: Text((user.email!),
                       style:
-                      TextStyle(fontSize: 20, fontWeight: FontWeight.w600)),
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.w600)),
                   // SizedBox(height: 8),
-                ),Text(user.uid),
+                ),
+                Text(user.uid),
               ],
             ),
           ),
@@ -103,37 +105,35 @@ class _homescreenState extends State<homescreen> {
             child: ListView(
               padding: EdgeInsets.zero,
               children: <Widget>[
-
-                  // Navigator.push(context, MaterialPageRoute(builder:(context) => settingsPage()));
+                // Navigator.push(context, MaterialPageRoute(builder:(context) => settingsPage()));
 
                 UserAccountsDrawerHeader(
                   decoration: BoxDecoration(color: Colors.purple),
-                  accountName: Text("${firstName+" "+lastName}"),
+                  accountName: Text("${firstName + " " + lastName}"),
                   accountEmail: Text(user.email!),
                   currentAccountPicture: CircleAvatar(
-
-                    child: Text(hasPimage == false?displayCheckerText = firstName[0] + lastName[0]
-                        : displayCheckerText = ""),
-                      backgroundImage: NetworkImage(profilePicLink)
-
-                  ),
-
+                      child: Text(hasPimage == false
+                          ? displayCheckerText = firstName[0] + lastName[0]
+                          : displayCheckerText = ""),
+                      backgroundImage: NetworkImage(profilePicLink)),
                 ),
-
 
                 ListTile(
                   leading: Icon(Icons.home),
                   title: Text("Home"),
                   onTap: () {
-    Navigator.push(
-    context, MaterialPageRoute(builder: (context) => Forgot()));
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => Forgot()));
                   },
                 ),
                 ListTile(
                   leading: Icon(Icons.settings),
                   title: Text("Settings"),
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder:(context) => settingsPage()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => settingsPage()));
                   },
                 ),
                 ListTile(
@@ -147,10 +147,11 @@ class _homescreenState extends State<homescreen> {
                   leading: Icon(Icons.send_to_mobile_rounded),
                   title: Text("Log Out"),
                   onTap: () {
-                    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => SignInScreen()),
-                          (Route<dynamic> route) => false,
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (context) => SignInScreen()),
+                      (Route<dynamic> route) => false,
                     );
-
                   },
                 ),
               ],
@@ -159,5 +160,3 @@ class _homescreenState extends State<homescreen> {
         ));
   }
 }
-
-
